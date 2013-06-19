@@ -1,0 +1,38 @@
+<div class="page-header">
+	<h1>Controllers & Routes</h1>
+</div>
+<p>
+	Controllers define the basic structure of any lBase application. This is one-on-one the same as is found in many popular frameworks.
+</p>
+<h2>Defining a simple page</h2>
+<p>
+	Controllers are components found in the <i>controllers</i> directory of applications and modules. If for example you wish to define the url <i>welcome/page</i> you would put the following content in <strong>/application/controllers/welcome.cfc</strong>:
+<pre class="prettyprint">&lt;cfcomponent extends="system.controller"&gt;
+	&lt;cffunction name="page"&gt;
+		&lt;cfset this.core.console.log("You opened /welcome/page")&gt;
+	&lt;/cffunction&gt;
+&lt;/cfcomponent&gt;</pre>
+</p>
+<h2>Page arguments</h2>
+<p>
+	Page arguments (page segments) are dynamically passed to the controller function. For example <i>/store/item/38</i> can be defined by putting the following content in <strong>/application/controllers/store.cfc</strong>:
+<pre class="prettyprint">&lt;cfcomponent extends="system.controller"&gt;
+	&lt;cffunction name="item"&gt;
+		&lt;cfargument name="id"&gt;
+		&lt;cfset this.core.console.log("You opened the item with id #arguments.id#")&gt;
+	&lt;/cffunction&gt;
+&lt;/cfcomponent&gt;</pre>
+</p>
+<h2>Routes</h2>
+<p>
+	Routes are rules defining that a certain url should be mapped to a certain controller. Say for example that you want any url with <i>item/number</i> to go to <i>store.cfc -> item(id)</i> this can be achieved by adding the following route config file (<strong>/application/config/routes.cfc</strong>):
+<pre class="prettyprint">&lt;cfcomponent extends="system.config.routes"&gt;
+	&lt;cfset routes["/item/(:num)"] = "store/item/$1"&gt;
+&lt;/cfcomponent&gt;</pre>
+	The following matchers are possible:<ul>
+		<li><strong>(*)</strong> - Match any string</li>
+		<li><strong>(:num)</strong> - Match a number</li>
+		<li><strong>(<i>regex</i>)</strong> - Match a regex (untested)</li>
+	</ul>
+	$1, $2, $3, etc. can be used to reference any matched string.
+</p>

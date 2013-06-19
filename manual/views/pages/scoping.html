@@ -1,0 +1,53 @@
+<div class="page-header">
+	<h1>Scoping</h1>
+</div>
+<p>
+	Object scoping is an unique selling point of lBase. It allows objects to be easily stored in the application, session or request scope. Default all libraries and config files for example are stored in the application scope.
+</p>
+<h2>Local scoping (application or session)</h2>
+<p>
+	First and foremost it's important to understand that this means that <strong>ALL</strong> self-defined variables should be scoped in the local scope. Otherwise two conquerent requests can change the <strong>SAME</strong> variable whilst you're for example looping over it. In general it's not advicable because of this to write to the <i>this</i> scope as well (though if carefully used the this scope can be extremely useful). To help you in this the manual will point out any variables scoped in the variables scope, so <strong>ALWAYS</strong> open your component in the manual after writing it. 
+</p>
+<p>
+	It's also important to note that a lot of coldfusion functions will write to the <i>variables</i> scope without you realizing. An example of this is for example the <i>index</i> variable in the following snippet.
+<pre class="prettyprint">&lt;cfloop from="1" to="1000" index="i"&gt;
+	&lt;!--- i can now be overwritten from a different request ---&gt;
+&lt;/cfloop&gt;</pre>
+</p>
+<h2>The cool thing about scoping</h2>
+<p>
+	As long as an component is not set in the 'instance' scope you don't need to keep any references to it. For example, if you have the component
+</p>
+<pre class="prettyprint">&lt;cfcomponent extends="system.library" lbase:scope="request"&gt;
+	&lt;cfset this.i = 0&gt;
+	&lt;cffunction name="add"&gt;
+		&lt;cfset this.i = this.i + 1&gt;
+	&lt;/cffunction&gt;
+&lt;/cfcomponent&gt;</pre>
+<p>
+	It's possible to do the following
+</p>
+<pre class="prettyprint">&lt;cfset this.app.lib("thelib").add()&gt;
+&lt;cfset this.app.lib("thelib").add()&gt;
+&lt;cfoutput&gt;#this.app.lib("thelib").i#&lt;/cfoutput&gt;</pre>
+<p>
+	which will always output 2, but you can juse as easily change it to the application scope after which it becomes a global pageview counter.
+</p>
+<h2>Changing the scope</h2>
+<p>
+	Changing the scope is as simple as saying:
+<pre class="prettyprint">&lt;cfcomponent extends="system.controller" lbase:scope="request"&gt;</pre>
+That's it!
+</p>
+<p>
+	The possible scopes are:<ul>
+		<li>application</li>
+		<li>session</li>
+		<li>request</li>
+		<li>instance</li>
+	</ul>
+</p>
+<h2>Controlling components (application or session)</h2>
+<p>
+	After changing your code components in the application or session scope will stay unchanged and because of this a number of mechanisms are there to control them. The 'proper' way to control them is to open <i>/admin/comstore/list</i> and unload the specific component in question. Alternatively it's also possible though to add a <i>?restart</i> flag to the url, this however will unload <strong>all</strong> components and could potentially cause trouble for other code or other users or developers working on the same lbase instance.
+</p>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!---<link rel="stylesheet" type="text/css" href="<%unsafe(app.core.site.url('assets/bootstrap/less/bootstrap.less'))>">--->
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="<%unsafe(app.core.site.url('assets/manual/less/base.less'))>">
+		<link rel="stylesheet" type="text/css" href="<%unsafe(app.core.site.url('assets/manual/google-code-prettify/prettify.css'))>">
+		<script src="<%unsafe(app.core.site.url('assets/manual/google-code-prettify/run_prettify.js'))>"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="<%unsafe(app.core.site.url('assets/bootstrap/js/bootstrap-dropdown.js'))>"></script>
+		<script src="<%unsafe(app.core.site.url('assets/bootstrap/js/bootstrap-tooltip.js'))>"></script>
+		<style>
+			.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+width: 940px;
+}
+		</style>
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="<%attr(app.core.site.url("manual"))>">Manual</a>
+					<ul class="nav">
+						<li class="activef">
+							<a href="<%attr(app.core.site.url("manual"))>">General</a>
+						</li>
+						<li>
+							<a href="<%attr(app.core.site.url("manual/application"))>">Application</a>
+						</li>
+						<li>
+							<a href="<%attr(app.core.site.url("manual/core"))>">Core</a>
+						</li>
+					  <li class="dropdown">
+					  	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
+					  	<ul class="dropdown-menu">
+					  		<cfloop array="#modules#" index="module">
+								<li><a href="<%attr(app.core.site.url("manual/"&module))>"><%html(module)></a></li>
+							</cfloop>
+						</ul>
+					  </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="columnLeft">
+				<%unsafe(leftColumn)>
+			</div>
+			<div class="columnRight">
+				<%unsafe(content)>
+			</div>
+		</div>
+	</body>
+</html>

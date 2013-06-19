@@ -1,0 +1,44 @@
+<div class="page-header">
+	<h1>Modules</h1>
+</div>
+<p>
+	Modules are (mostly) self contained 'mini-applications' with a widely differing set of functionalities. Simply put a module has the same behavior and interfaces as <i>this.app</i> has.
+</p>
+<h2>Accessing a module</h2>
+<h3>From the code</h3>
+<p>
+	To access a module itself (in example the module named <i>modulename</i>) the following can be used
+</p>
+<pre class="prettyprint linenums">&lt;cfset this.app.module("modulename")&gt;</pre>
+<p>
+	This will return in general an interface exactly the same as <i>this.app</i> exposes, and thus to call a library the following can be used:
+</p>
+<pre class="prettyprint linenums">&lt;cfset this.app.module("modulename").lib("libaryname").someFunction()&gt;</pre>
+<p>
+	It is however possible for a module to change the way it is interfaced. In that case check the manual of the module.
+</p>
+<h3>By route (url)</h3>
+<p>
+	If (and only if) a <strong>/config/routes.cfc</strong> is present in the module will it be accessible by url (after purging the <i>application.config.routes</i> object, see scoping). If the route file is available the module becomes exposed through <i>/modulename/modulecontrollername/function</i>.
+</p>
+<h2>Writing a module</h2>
+<p>
+	In essence writing a module is as simple as making a directoy with the module name in the modules folder. If the module is simply a collection of libraries you can just drop in a libraries folder (as you would in the applicaiton folder itself) and write your libraries.
+</p>
+<h3>Custom interface</h3>
+<p>
+	If you want to expose functions directly on the module, for example allowing:
+</p>
+<pre class="prettyprint linenums">&lt;cfset this.app.module("modulename").customFunc()&gt;</pre>
+<p>
+	this can be achieved by placing an <strong>interface.cfc</strong> file in your root folder of your module looking like
+</p>
+<pre class="prettyprint">&lt;cfcomponent extends="system.interface"&gt;
+	&lt;cffunction name="customFunc"&gt;
+		&lt;cfset this.app.core.console.log("You called a custom function of a module")&gt;
+	&lt;/cffunction&gt;
+&lt;/cfcomponent&gt;</pre>
+<h3>Config</h3>
+<p>
+	Please note that you should extend <i>system.config.modules.*</i> rather than <i>system.config.*</i>
+</p>

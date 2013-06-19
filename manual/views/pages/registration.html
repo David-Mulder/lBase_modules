@@ -1,0 +1,41 @@
+<div class="page-header">
+	<h1>Registration</h1>
+</div>
+<p>
+	Registration allows the use of shorthands to access libraries or modules
+</p>
+<h2>Register an object</h2>
+<p>
+	To access a library you would normally use
+</p>
+<pre class="prettyprint">&lt;cfset this.app.lib("example").someFunction()&gt;</pre>
+<p>
+	However this is relatively long and because of this registration was introduced. Registration allows you to access the same object like this
+</p>
+<pre class="prettyprint">&lt;cfset this.example.someFunction()&gt;</pre>
+<p>
+	or this
+</p>
+<pre class="prettyprint">&lt;cfset this.app.example.someFunction()&gt;</pre>
+<p>
+	To get this to work you first need to register the module. Registration is simply done by calling
+</p>
+<pre class="prettyprint">&lt;cfset this.register(this.app.lib("example"))&gt;</pre>
+
+<h2>Autoregistration</h2>
+<p>
+	If you want an object to be globally accessible it's possible to autoregister libraries and modules from <strong>config/base.cfc</strong> and adding
+</p>
+<pre class="prettyprint">&lt;cfset config["autoregister"] = {}&gt;
+&lt;cfset config["autoregister"]["libraries"] = ["modules.core.console","example"]&gt;
+&lt;cfset config["autoregister"]["modules"] = ["core","template"]&gt;</pre>
+<p>
+	From the application it's possible to autoregister module libraries, from inside a module only modules and it's own libraries can be autoloaded.
+</p>
+<p>
+	Please also note that from a module it's still possible to access modules that are autoregistered in the application through
+</p>
+<pre class="prettyprint">&lt;cfset this.app.core.console.log()&gt;</pre>
+<p>
+	However this should only be done with modules that are <strong>ALWAYS</strong> autoregistered (such as the core module) 
+</p>

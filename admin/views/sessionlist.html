@@ -1,0 +1,23 @@
+<table>
+	
+	<thead>
+		<tr>
+			<th>Component name</th>
+			<th>Number of instances</th>
+			<th>Scope</th>
+			<th></th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<cfloop collection="#componentRefs#" item="hash">
+			<tr> 
+				<td><%html(componentRefs[hash].component)></td>
+				<td><%html(componentRefs[hash].count)></td>
+				<td><%html(componentRefs[hash].scope)></td>
+				<td><a href="<%attr(variables.mod.core.site.url('admin/comstore/purge/'&hash))>">Purge</a></td>
+			</tr>
+		</cfloop>
+	</tbody>
+	
+</table>

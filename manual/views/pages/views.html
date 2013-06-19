@@ -1,0 +1,32 @@
+<div class="page-header">
+	<h1>Views</h1>
+</div>
+<p>
+	Views should be used to display any outputted data. In essence any and all interfacing should be done through views.
+</p>
+<h2>Defining a simple (html/cfml) view</h2>
+<p>
+	A view file in it's most simple sense looks like a html file. For example
+<pre class="prettyprint linenums">&lt;strong&gt;Hello&lt;/strong&gt; World</pre>
+	would be valid view. If this view were to be placed in <strong>/application/views/hello.html</strong> it could be called from anywhere using (provided that the defaultViewer is the html viewer, see below):
+<pre class="prettyprint linenums">&lt;cfset this.app.view("hello")&gt;</pre>
+	It is possible to pass additional data to the view using the second argument of the view function, so if we change <strong>hello.html</strong> to:
+<pre class="prettyprint linenums">&lt;strong&gt;Hello&lt;/strong&gt; &lt;%html(something)&gt;</pre>
+	We can pass the something variable as such:
+<pre class="prettyprint linenums">&lt;cfset this.app.view("hello",{
+	something:"World"
+})&gt;</pre>
+</p>
+<h2>Outputting functions</h2>
+<p>
+	As you saw above the <i>something</i> variable was not directly outputted, but rather was outputted through the <i>html()</i> function. This was done to properly encode the <i>something</i> variable. The <i>&lt;%</i> shorthand syntax allows the developer to quickly call these functions. All relevant functions can be found <a href="<%attr(app.core.site.url("manual/core/library/xss"))>">here</a>.
+</p>
+<h2>Viewer types</h2>
+<p>
+	The above examples all used html/cfml viewers. In html/cfml viewers coldfusion code can be used (despite the .html extension), however coldfusion should be mostly limited to the use of <i>&lt;cfloop&gt;</i> and <i>&lt;cfif&gt;</i>. It is also however possible to use mustache viewers. Mustache viewers are mustache template files with a <i>.mustache</i> extension. They can be either made the default viewer type in the <i>base.cfc</i> config file, or alternatively be mixed with html viewers by adding <i>.mustache</i> whilst calling the view as such:
+<pre class="prettyprint linenums">&lt;cfset this.app.view("hello.mustache",{
+	something:"World"
+})&gt;</pre>
+	To output data the same outputting functions are available, however the syntax is different (mustache style) as follows:
+<pre class="prettyprint linenums">&lt;strong&gt;Hello&lt;/strong&gt; {{something:html}}</pre>
+</p>

@@ -1,0 +1,26 @@
+<div class="page-header">
+	<h1>Libraries</h1>
+</div>
+<p>
+	Libraries are stateless components defining a set of functions.
+</p>
+<h2>Using libraries</h2>
+<p>
+	Libraries can be accessed using 
+<pre class="prettyprint linenums">&lt;cfset this.app.lib("libaryname").someFunction()&gt;</pre>
+	or if the library is part of a module (provided the module is not registered, see registration)
+<pre class="prettyprint linenums">&lt;cfset this.app.module("modulename").lib("libaryname").someFunction()&gt;</pre>
+	
+</p>
+<h2>Writing libraries</h2>
+<p>
+	<span class="alert alert-warning"><i class="icon icon-warning-sign"></i> Please read the scoping guide to understand the absolute importance of making all variables local scoped.</span>
+</p>
+<p>
+	Writing a library is as simple as dropping a component extending <i>system.library</i> into <strong>/application/libraries</strong> (or equivalent in a module):
+<pre class="prettyprint linenums">&lt;cfcomponent extends="system.library"&gt;
+	&lt;cffunction name="someFunction"&gt;
+		&lt;cfset this.core.console.log("You accessed the function someFunction from inside a library")&gt;
+	&lt;/cffunction&gt;
+&lt;/cfcomponent&gt;</pre>
+</p>

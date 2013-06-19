@@ -1,0 +1,108 @@
+<style>
+	.code{
+		max-height:0px;
+		overflow:hidden;
+		-webkit-transition: max-height .5s;
+	}
+	.codetoggle{
+		position:relative;
+		top:13px;
+	}
+	.arguments td, .arguments th{
+		padding:2px 8px;
+	}
+	.functionContainer,h1,h2,h3,h4,h5,h6,code,pre,.code{
+		clear:both;
+	}
+	.argumentDocumentation,.argumentDocumentation:hover{
+		color:inherit;
+		text-decoration:none;
+		border-bottom:1px dotted black;
+	}
+	.tooltip p{
+		margin:0px;
+	}
+</style>
+<div class="page-header">
+	<h1><%html(name)> <%html(type)> <small><%html(lbasepath)></small></h1>
+</div>
+<cfif isDefined("docs")>
+	<%unsafe(this.app.module("markdown").makeHtml(docs))>
+</cfif>
+<cfif arraylen(functions) gt 0>
+	<h2>Functions</h2>
+	<cfloop array="#functions#" index="function">
+		<div id="func_<%attr(function.name)>" class="functionContainer">
+			<h3 class="func">
+				<%html(ucase(left(function.name,1))&mid(function.name,2,len(function.name)-1))> 
+				<small><%html(function.name)>(<cfloop array="#function.parameters#" index="argument"><cfif argument.name neq function.parameters[1].name>, </cfif><cfif isDefined('argument.hint')><a title="<%unsafe(this.app.module('markdown').makeHtml(argument.hint))>" class="argumentDocumentation" data-toggle="tooltip"></cfif><%html(argument.name)><cfif not argument.required>?</cfif><cfif isDefined('argument.hint')></a></cfif><cfif argument.type neq "ANY">:<i><%html(argument.type)></i></cfif></cfloop>)
+				</small>
+				<small class="pull-right codetoggle"><a href="#" class="togglecode" data-toggleId="code_<%attr(function.name)>">Show code</a></small>
+			</h3>
+			<cfif function.hasError>
+				<p class="" style="margin-top:10px;"><span class="label label-warning text-right"><i class="icon icon-fire icon-white"></i> This function contains errors, please inspect code for more info.</span></p>
+			</cfif>
+			<!---
+			<cfif arraylen(function.parameters) eq 0>
+				<p class="pull-right"><small style="color:gray;padding:0px 0px 10px 10px;">(No known arguments)</small></p>
+			<cfelse>
+				<div class="arguments">
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th class="minwidth">Name</th>
+								<th class="minwidth">Required</th>
+								<th class="minwidth">Type</th>
+								<th>Docs</th>
+							</tr>
+						</thead>
+						<tbody>
+							<cfloop array="#function.parameters#" index="argument">
+								<tr>
+									<td><%html(argument.name)> </td>
+									<td><%html(argument.required)></td>
+									<td><%html(argument.type)></td>
+									<td>
+										<cfif isDefined("argument.hint")><%unsafe(this.app.module("markdown").makeHtml(argument.hint))></cfif>
+									</td>
+								</tr>
+							</cfloop>
+						</tbody>
+					</table>
+				</div>
+			</cfif>
+			--->
+			<cfif isDefined("function.docs")>
+				<p><%unsafe(this.app.module("markdown").makeHtml(function.docs))></p>
+			</cfif>
+			<div class="code" id="code_<%attr(function.name)>">
+				<h4>Source code of the function</h4>
+				<?prettify linenums=<%html(function.sourcestartline)>?>
+				<pre class="prettyprint linenums pre-scrollable"><cfloop array="#function.source#" index="line"><%html(line.code)><cfif isDefined("line.warning")><div class="pull-right"><span class="label label-warning"><i class="icon icon-fire icon-white"></i> <%html(line.warning)></span></div></cfif>
+	</cfloop></pre>
+	</div>
+		</div>
+	</cfloop>
+	
+	<script>
+		var toggleLinks = document.querySelectorAll(".togglecode");
+		var toggleFunction = function(ev){
+			ev.preventDefault();
+			var el = document.getElementById(this.dataset.toggleid);
+			if(el.style.maxHeight != "0px" && el.style.maxHeight != ""){
+				el.style.maxHeight="0px";
+				this.innerText = "Show code";
+			}else{
+				el.style.maxHeight=el.scrollHeight+"px";
+				this.innerText = "Hide code";			
+			}
+			//el.scrollIntoView();
+			return false;
+		};
+		for(var i=0;i<toggleLinks.length;i++){
+			toggleLinks[i].addEventListener("click",toggleFunction);
+		}
+		
+		$("[data-toggle='tooltip']").tooltip({html:true})
+	</script>
+</cfif>

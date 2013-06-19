@@ -1,0 +1,21 @@
+<ul class="nav nav-list">
+	<li><a href="<%attr(app.core.site.url("manual/"&name))>"><%html(name)></a></li>		
+	<cfif arraylen(controllers) gt 0>
+		<li class="nav-header">Controllers</li>
+		<cfloop array="#controllers#" index="controller">
+			<li><a href="<%attr(app.core.site.url("manual/"&name&"/controller/"&controller))>"><%html(controller)></a></li>		
+		</cfloop>
+	</cfif>
+	<cfif arraylen(models) gt 0>
+		<li class="nav-header">Models</li>
+		<cfloop array="#models#" index="model">
+			<li><a href="<%attr(app.core.site.url("manual/"&name&"/model/"&model))>"><%html(model)></a></li>		
+		</cfloop>
+	</cfif>
+	<cfif arraylen(libraries) gt 0>
+		<li class="nav-header">Libraries</li>
+		<cfloop array="#libraries#" index="library">
+			<li><a href="<%attr(app.core.site.url("manual/"&name&"/library/"&library))>"><%html(library)></a></li>		
+		</cfloop>
+	</cfif>
+</ul>

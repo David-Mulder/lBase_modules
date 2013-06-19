@@ -1,0 +1,6 @@
+<div class="page-header">
+	<h1>Models</h1>
+</div>
+<p>
+	Models should be used to do most of the business logic or more broadly defined all data retrieval and storage related tasks. The framework does not put any strict rules in place to force models to behave in a certain way. They can be accessed exactly the same way as libraries, except <i>.model()</i> rather than <i>.lib()</i> should be used. Models are instanced objects (see scoping), implying that models could and should have a state (e.g. have a select and a save function, where the data is stored in the <i>this</i> scope rather than returning the data), however once again this is not a hard requirement and may differ from module to module and from application to application (though should be consistent per <i>models</i> directory). 
+</p>

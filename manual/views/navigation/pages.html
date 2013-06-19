@@ -1,0 +1,6 @@
+<ul class="nav nav-list">
+	<li class="nav-header">lBase</li>
+	<cfloop array="#arr_pages#" index="page">
+		<li><a href="<%html(app.core.site.url("manual/helppage/"&page))>"><%html(page)></a></li>		
+	</cfloop>
+</ul>
